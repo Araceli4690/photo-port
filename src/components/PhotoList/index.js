@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import Modal from "../Modal";
+import Modal from '../Modal';
 
 const PhotoList = ({ category }) => {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [currentPhoto, setCurrentPhoto] = useState();
 
     const [photos] = useState([
         {
@@ -103,22 +105,14 @@ const PhotoList = ({ category }) => {
 
     const currentPhotos = photos.filter((photo) => photo.category === category);
 
-    const [currentPhoto, setCurrentPhoto] = useState();
-
-    //create hook thta manages whether modal is open or not
-    const [isModalOpen, setIsModalOpen] = useState(false);
-
-    //updating current photo state w/ data retrieve through click event
     const toggleModal = (image, i) => {
-        setCurrentPhoto({ ...image, index: i })
-        //setting setismodalopen to true when clicked so modal opens
-        setIsModalOpen(true);
-    }
+        setCurrentPhoto({ ...image, index: i });
+        setIsModalOpen(!isModalOpen);
+    };
 
     return (
         <div>
-            {/*will only render if ismodalopen is true}*/}
-            {isModalOpen && <Modal currentPhoto={currentPhoto} />}
+            {isModalOpen && <Modal onClose={toggleModal} currentPhoto={currentPhoto} />}
             <div className="flex-row">
                 {currentPhotos.map((image, i) => (
                     <img
